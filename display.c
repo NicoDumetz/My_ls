@@ -63,10 +63,10 @@ void disp_d(struct flags *flags, char *path, int d)
 
 void display(struct dir *buffer, struct flags *flags, char *path, int plus)
 {
-    if (len_array(buffer) == 0)
-        return;
     if ( flags->d > 0)
         return disp_d(flags, path, 1);
+    if (len_array(buffer) == 0)
+        return;
     my_sort_array(buffer);
     reverse_array(buffer, flags);
     my_sort_array_time(buffer, flags);
