@@ -19,7 +19,7 @@ static void set_perm(struct stat *file, struct dir *buffer, int i)
     buffer[i].grp[3] = '\0';
     buffer[i].other[0] = (file->st_mode & S_IROTH) ? 'r' : '-';
     buffer[i].other[1] = (file->st_mode & S_IWOTH) ? 'w' : '-';
-    buffer[i].other[2] = (file->st_mode & S_IXOTH) ? 'x' : '-';
+    buffer[i].other[2] = (file->st_mode & S_IXOTH) ? (file->st_mode & S_ISVTX) ? 't' : 'd' :'-';
     buffer[i].other[3] = '\0';
 }
 
