@@ -47,7 +47,14 @@ static void get_time(struct dir *buffer, int i, char *date)
     buffer[i].month[3] = '\0';
 }
 
-void add_perm(struct dirent *entity, struct dir *buffer, int i, char *path)
+static int error(void)
+{
+    printf("%s\n", strerror(errno));
+    exit(0);
+    return 84;
+}
+
+int add_perm(struct dirent *entity, struct dir *buffer, int i, char *path)
 {
     char *path_files = malloc(sizeof(char) * (my_strlen(path) +
     my_strlen(entity->d_name) + 1));
@@ -59,10 +66,13 @@ void add_perm(struct dirent *entity, struct dir *buffer, int i, char *path)
         my_strcat(path_files, path);
     my_strcat(path_files, entity->d_name);
     if (stat(path_files, &file) == -1)
-        printf("error\n");
+        return error();
     set_perm(&file, buffer, i);
+    get_user_group(&file, buffer, i);
     buffer[i].file_info = file.st_nlink;
     get_time(buffer, i, ctime(&file.st_mtime));
     buffer[i].size = file.st_size;
+    buffer[i].total = file.st_blocks;
+    buffer[i].mtime = file.st_mtime;
     free(path_files);
 }

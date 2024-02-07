@@ -7,7 +7,7 @@
 #include "include/my_ls.h"
 #include "include/my_printf.h"
 
-static void add_information(struct flags *flags,
+static int add_information(struct flags *flags,
     struct dir *buffer, DIR* fd, char *path)
 {
     int i;
@@ -57,6 +57,15 @@ static char *get_av(char **av, char *path, struct flags *flags)
     return path;
 }
 
+int error(DIR* fd)
+{
+    if (fd == NULL) {
+        printf("%s\n", strerror(errno));
+        exit(0);
+        return 84;
+    }
+}
+
 int my_ls(int ac, char **av)
 {
     DIR* fd;
@@ -65,8 +74,11 @@ int my_ls(int ac, char **av)
     char *path = get_av(av, path, &flags);
 
     fd = opendir(path);
+    if (error(fd) == 84)
+        return 84;
     buffer = malloc(sizeof(struct dir) * 500000);
-    add_information(&flags, buffer, fd, path);
+    if (add_information(&flags, buffer, fd, path) == 84)
+        return 84;
     display(buffer, &flags, path);
     closedir(fd);
     free(buffer);
@@ -75,6 +87,5 @@ int my_ls(int ac, char **av)
 
 int main(int ac, char **av)
 {
-    my_ls(ac, av);
-    return 0;
+    return my_ls(ac, av);
 }

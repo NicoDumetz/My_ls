@@ -28,3 +28,12 @@ int my_strcmp_alpha(char const *s1, char const *s2)
     else
         return 1;
 }
+
+int my_strcmp_time(int s1, int s2)
+{
+    if (s1 < s2)
+        return 1;
+    if (s1 > s2)
+        return -1;
+    return 0;
+}
