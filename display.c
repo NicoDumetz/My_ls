@@ -31,12 +31,10 @@ static void display_name(struct dir *buffer, struct flags *flags,
 {
     int total = 0;
 
-    if (plus == 1)
-        my_printf("%s:\n", path);
     if (flags->l > 0) {
         for (int k = 0; buffer[k].name; k++)
             total += buffer[k].total;
-        my_printf("total %d\n", total / 2 + 4);
+        my_printf("total %d\n", total / 2);
         for (int i = 0; buffer[i].name; i++)
             disp_l(buffer, i);
     } else {
@@ -46,25 +44,25 @@ static void display_name(struct dir *buffer, struct flags *flags,
     }
 }
 
-void disp_d(struct flags *flags, char *path, int d)
+int disp_d(struct flags *flags, char *path, int d)
 {
     struct dir disp_d;
 
     if (flags->l == 0) {
         my_printf("%s\n", path);
-        return;
+        return 0;
     }
     add_perm_d(&disp_d, path);
     disp_d.d = d == 1 ? 'd' : '-';
     disp_d.name = path;
     disp_l(&disp_d, 0);
-    return;
+    return 0;
 }
 
 void display(struct dir *buffer, struct flags *flags, char *path, int plus)
 {
-    if ( flags->d > 0)
-        return disp_d(flags, path, 1);
+    if (plus == 1)
+        my_printf("%s:\n", path);
     if (len_array(buffer) == 0)
         return;
     my_sort_array(buffer);

@@ -113,6 +113,8 @@ static int file_or_dir(char *path, struct flags *flags, int plus)
         exit(0);
         return 84;
     }
+    if ( flags->d > 0)
+        return disp_d(flags, path, 1);
     if (flags->R > 0) {
         flags_r(path, flags, 1);
         return 0;

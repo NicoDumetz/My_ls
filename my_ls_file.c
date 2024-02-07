@@ -43,6 +43,7 @@ static void verify_dir(struct dirent *ent, char *path,
     stat(new_path, info);
     if (ent->d_type == 4)
         flags_r(new_path, flags, 1);
+    free(new_path);
 }
 
 static int after(char *path, struct flags *flags, int plus)
