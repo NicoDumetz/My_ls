@@ -55,7 +55,6 @@ int add_information(struct flags *flags,
             i++;
         }
     }
-    i--;
     buffer[i].name = 0;
 }
 

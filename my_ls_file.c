@@ -22,6 +22,15 @@ static int error(DIR* fd, char *path)
     }
 }
 
+static char *set_path_r(char *path_files, char *path, struct dirent *entity)
+{
+    my_strcat(path_files, path);
+    if (path_files[my_strlen(path) - 1] != '/')
+        my_strcat(path_files, "/");
+    my_strcat(path_files, entity->d_name);
+    return path_files;
+}
+
 static void verify_dir(struct dirent *ent, char *path,
     struct flags *flags, struct stat *info)
 {
@@ -30,7 +39,7 @@ static void verify_dir(struct dirent *ent, char *path,
     new_path = malloc(sizeof(char) * (my_strlen(path) +
     my_strlen(ent->d_name) + 2));
     new_path[0] = '\0';
-    new_path = set_path(new_path, path, ent);
+    new_path = set_path_r(new_path, path, ent);
     stat(new_path, info);
     if (ent->d_type == 4)
         flags_r(new_path, flags, 1);

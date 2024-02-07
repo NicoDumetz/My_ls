@@ -14,6 +14,8 @@ int len_array(struct dir *tab)
 {
     int compt;
 
+    if (tab == NULL)
+        return 0;
     for (compt = 0; tab[compt].name; compt++) {
     }
     return compt;
