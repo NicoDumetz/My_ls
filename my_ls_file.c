@@ -22,24 +22,35 @@ static int error(DIR* fd, char *path)
     }
 }
 
+static void verify_dir(struct dirent *ent, char *path,
+    struct flags *flags, struct stat *info)
+{
+    char *new_path;
+
+    new_path = malloc(sizeof(char) * (my_strlen(path) +
+    my_strlen(ent->d_name) + 2));
+    new_path[0] = '\0';
+    new_path = set_path(new_path, path, ent);
+    stat(new_path, info);
+    if (ent->d_type == 4)
+        flags_r(new_path, flags, 1);
+}
+
 static int after(char *path, struct flags *flags, int plus)
 {
     DIR *fd;
     struct dirent *ent;
     struct stat info;
-    char *new_path;
 
-    return 0;
     fd = opendir(path);
     if (error(fd, path) == 84)
         return 84;
     ent = readdir(fd);
     while (ent != NULL) {
+        if (strcmp(ent->d_name, "..") != 0 && strcmp(ent->d_name, ".") != 0
+            && strcmp(ent->d_name, ".git"))
+            verify_dir(ent, path, flags, &info);
         ent = readdir(fd);
-        new_path = set_path(new_path, path, ent);
-        stat(new_path, &info);
-        if (S_ISDIR(info.st_mode))
-            flags_r(new_path, flags, plus);
     }
 }
 
