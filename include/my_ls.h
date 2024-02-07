@@ -15,6 +15,7 @@
     #include <grp.h>
     #include <errno.h>
     #include <string.h>
+    #include <sys/sysmacros.h>
 typedef struct dir {
     char *name;
     char d;
@@ -34,6 +35,8 @@ typedef struct dir {
     int total;
     int mtime;
     char *readlink;
+    unsigned int major;
+    unsigned int minor;
 } dir;
 typedef struct flags {
     int a;

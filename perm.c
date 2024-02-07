@@ -7,6 +7,13 @@
 #include "include/my_ls.h"
 #include "include/my_printf.h"
 
+static void char_device(struct stat *file, struct dir *buffer, int i)
+{
+    buffer[i].d = S_ISCHR(file->st_mode) ? 'c' : buffer[i].d;
+    buffer[i].major = S_ISCHR(file->st_mode) ? major(file->st_rdev) : 0;
+    buffer[i].minor = S_ISCHR(file->st_mode) ? minor(file->st_rdev) : 0;
+}
+
 static void set_perm(struct stat *file, struct dir *buffer, int i)
 {
     buffer[i].usr[0] = (file->st_mode & S_IRUSR) ? 'r' : '-';
@@ -28,7 +35,7 @@ static void set_perm(struct stat *file, struct dir *buffer, int i)
         buffer[i].other[2] = (file->st_mode & S_ISVTX) ? 'T' :
         buffer[i].other[2];
     buffer[i].other[3] = '\0';
-    buffer[i].d = S_ISCHR(file->st_mode) ? 'c' : buffer[i].d;
+    char_device(file, buffer, i);
 }
 
 static void get_user_group(struct stat *file, struct dir *buffer, int i)
