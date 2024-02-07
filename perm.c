@@ -53,7 +53,8 @@ static void get_time(struct dir *buffer, int i, char *date)
 
 static int error(void)
 {
-    my_printf("%s\n", strerror(errno));
+    write(2, strerror(errno), my_strlen(strerror(errno)));
+    write(2, "\n", 1);
     exit(84);
     return 84;
 }

@@ -16,7 +16,12 @@ int my_ls_file(char *path, struct flags *flags, int plus)
 static int error(DIR* fd, char *path)
 {
     if (fd == NULL) {
-        my_printf("ls: cannot access '%s': %s\n", path, strerror(errno));
+        write(2, "ls: cannot access '", 19);
+        write(2, path, my_strlen(path));
+        write(2, "': ", 3);
+        write(2, strerror(errno), my_strlen(strerror(errno)));
+        write(2, "\n", 1);
+        exit(84);
         return 84;
     }
 }
