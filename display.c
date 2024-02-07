@@ -11,14 +11,14 @@
 static void disp_l(struct dir *buffer, int i)
 {
     if (buffer[i].d == 'l') {
-        my_printf("%c%s%s%s %d %s %s %ld %s %2d %d:%d %s -> '%s'\n"
+        my_printf("%c%s%s%s. %d %s %s %ld %s %d %02d:%02d %s -> '%s'\n"
         , buffer[i].d, buffer[i].usr, buffer[i].grp, buffer[i].other
         , buffer[i].file_info, buffer[i].name_user
         , buffer[i].name_group, buffer[i].size, buffer[i].month
         , buffer[i].day, buffer[i].hour, buffer[i].min, buffer[i].name,
         buffer[i].readlink);
     } else {
-        my_printf("%c%s%s%s %d %s %s %ld %s %2d %d:%d %s\n"
+        my_printf("%c%s%s%s. %d %s %s %ld %s %d %02d:%02d %s\n"
         , buffer[i].d, buffer[i].usr, buffer[i].grp, buffer[i].other
         , buffer[i].file_info, buffer[i].name_user
         , buffer[i].name_group, buffer[i].size, buffer[i].month
@@ -36,7 +36,7 @@ static void display_name(struct dir *buffer, struct flags *flags,
     if (flags->l > 0) {
         for (int k = 0; buffer[k].name; k++)
             total += buffer[k].total;
-        my_printf("total %d\n", total / 2);
+        my_printf("total %d\n", total / 2 + 4);
         for (int i = 0; buffer[i].name; i++)
             disp_l(buffer, i);
     } else {
