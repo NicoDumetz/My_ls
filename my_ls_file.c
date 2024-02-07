@@ -17,7 +17,6 @@ static int error(DIR* fd, char *path)
 {
     if (fd == NULL) {
         my_printf("ls: cannot access '%s': %s\n", path, strerror(errno));
-        exit(0);
         return 84;
     }
 }
@@ -57,8 +56,8 @@ static int after(char *path, struct flags *flags, int plus)
         return 84;
     ent = readdir(fd);
     while (ent != NULL) {
-        if (strcmp(ent->d_name, "..") != 0 && strcmp(ent->d_name, ".") != 0
-            && strcmp(ent->d_name, ".git"))
+        if (my_strcmp(ent->d_name, "..") != 0 &&
+            my_strcmp(ent->d_name, ".") != 0 && my_strcmp(ent->d_name, ".git"))
             verify_dir(ent, path, flags, &info);
         ent = readdir(fd);
     }

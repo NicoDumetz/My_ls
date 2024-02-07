@@ -52,8 +52,8 @@ int disp_d(struct flags *flags, char *path, int d)
         my_printf("%s\n", path);
         return 0;
     }
-    add_perm_d(&disp_d, path);
     disp_d.d = d == 1 ? 'd' : '-';
+    add_perm_d(&disp_d, path);
     disp_d.name = path;
     disp_l(&disp_d, 0);
     return 0;

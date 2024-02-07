@@ -11,7 +11,7 @@ static int error(DIR* fd, char *path)
 {
     if (fd == NULL) {
         my_printf("ls: cannot access '%s': %s\n", path, strerror(errno));
-        exit(0);
+        exit(84);
         return 84;
     }
 }
@@ -110,7 +110,7 @@ static int file_or_dir(char *path, struct flags *flags, int plus)
 
     if (stat(path, &info) == -1) {
         my_printf("ls: cannot access '%s': %s\n", path, strerror(errno));
-        exit(0);
+        exit(84);
         return 84;
     }
     if ( flags->d > 0)

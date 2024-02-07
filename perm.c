@@ -22,6 +22,9 @@ static void set_perm(struct stat *file, struct dir *buffer, int i)
     buffer[i].other[2] = (file->st_mode & S_IXOTH) ? 'x' : '-';
     buffer[i].other[2] = (file->st_mode & S_ISVTX) ? 't' : buffer[i].other[2];
     buffer[i].other[3] = '\0';
+    if (S_ISCHR(file->st_mode)) {
+        buffer[i].d = 'c';
+    }
 }
 
 static void get_user_group(struct stat *file, struct dir *buffer, int i)
@@ -51,7 +54,7 @@ static void get_time(struct dir *buffer, int i, char *date)
 static int error(void)
 {
     my_printf("%s\n", strerror(errno));
-    exit(0);
+    exit(84);
     return 84;
 }
 
@@ -114,4 +117,6 @@ int add_perm_d(struct dir *disp_d, char *path)
     disp_d[0].size = file.st_size;
     disp_d[0].total = file.st_blocks;
     disp_d[0].mtime = file.st_mtime;
+    if (S_ISCHR(file.st_mode))
+        disp_d[0].d = 'c';
 }
