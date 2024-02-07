@@ -24,7 +24,7 @@ static void set_perm(struct stat *file, struct dir *buffer, int i)
         buffer[i].other[2] == 'x')
         buffer[i].other[2] = (file->st_mode & S_ISVTX) ? 't' :
         buffer[i].other[2];
-    else if (buffer[i].other[0] == 'r' && buffer[i].other[1] == 'w')
+    else
         buffer[i].other[2] = (file->st_mode & S_ISVTX) ? 'T' :
         buffer[i].other[2];
     buffer[i].other[3] = '\0';
