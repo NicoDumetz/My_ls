@@ -1,0 +1,72 @@
+README: my_ls
+
+The my_ls command is a custom implementation of the ls command in C. This README provides an overview of the my_ls command, including its usage, options, and features.
+Overview
+
+    Objective:
+    Recode the ls command with support for options -alRdrt and the ability to pass a list of files/folders as parameters.
+
+    Binary Name:
+    my_ls
+
+Usage
+
+The my_ls command can be used similarly to the standard ls command, with support for various options and file/folder parameters.
+Examples:
+
+    Displaying files in the current directory with detailed information:
+
+    shell
+
+$ ./my_ls -l
+
+Sorting files by modification time:
+
+shell
+
+$ ./my_ls -t
+
+Displaying files recursively:
+
+shell
+
+$ ./my_ls -R
+
+Passing a list of files/folders as parameters:
+
+shell
+
+    $ ./my_ls -l /dev /usr/sbin
+
+Options
+
+The my_ls command supports the following options:
+
+    -a: Include hidden files in the output.
+    -l: Display detailed information about each file.
+    -R: Recursively list subdirectories encountered.
+    -d: List directories themselves, not their contents.
+    -r: Reverse the order of the sort.
+    -t: Sort files by modification time, newest first.
+
+Bonus Features
+
+    Column Formatting: Support for formatting the output into multiple columns.
+    Sorting: Additional sorting options such as sorting by file size or file type.
+    Coloring: Colorize the output based on file types or permissions.
+    Additional Options: Handle other ls options such as -u, -F, -g, -f, etc.
+
+Compilation
+
+Compile the my_ls command using the provided Makefile:
+
+bash
+
+$ make
+
+Contributing
+
+Contributions to the project are welcome! Feel free to open an issue or submit a pull request on the project's repository.
+Author
+
+Nicolas Dumetz
