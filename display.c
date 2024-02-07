@@ -17,10 +17,13 @@ static void disp_l(struct dir *buffer, int i)
     , buffer[i].day, buffer[i].hour, buffer[i].min, buffer[i].name);
 }
 
-static void display_name(struct dir *buffer, struct flags *flags)
+static void display_name(struct dir *buffer, struct flags *flags,
+    int plus, char *path)
 {
     int total = 0;
 
+    if (plus == 1)
+        my_printf("%s:\n", path);
     if (flags->l > 0) {
         for (int k = 0; buffer[k].name; k++)
             total += buffer[k].total;
@@ -49,11 +52,11 @@ static void disp_d(struct flags *flags, char *path, struct dir *buffer)
     return;
 }
 
-void display(struct dir *buffer, struct flags *flags, char *path)
+void display(struct dir *buffer, struct flags *flags, char *path, int plus)
 {
     reverse_array(buffer, flags);
     my_sort_array_time(buffer, flags);
     if ( flags->d > 0)
         return disp_d(flags, path, buffer);
-    display_name(buffer, flags);
+    display_name(buffer, flags, plus, path);
 }

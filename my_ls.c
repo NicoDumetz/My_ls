@@ -86,7 +86,7 @@ static int get_size(char *path)
     return i;
 }
 
-int my_ls(char *path, struct flags *flags)
+int my_ls(char *path, struct flags *flags, int plus)
 {
     DIR* fd;
     struct dir *buffer;
@@ -98,7 +98,7 @@ int my_ls(char *path, struct flags *flags)
     buffer = malloc(sizeof(struct dir) * size);
     if (add_information(flags, buffer, fd, path) == 84)
         return 84;
-    display(buffer, flags, path);
+    display(buffer, flags, path, plus);
     closedir(fd);
     free(buffer);
     return 1;
@@ -107,18 +107,25 @@ int my_ls(char *path, struct flags *flags)
 static char *get_av(char **av)
 {
     int bo = 0;
+    int compt = 0;
     struct flags flags;
 
-    for (int i = 1; av[i]; i++) {
-        if (av[i][0] != '-') {
-            my_ls(av[i], &flags);
+    for (int k = 1; av[k]; k++) {
+        if (av[k][0] == '-')
+            get_flags(av[k], &flags);
+        else {
+            compt += 1;
             bo = 1;
-        } else
-            get_flags(av[i], &flags);
+        }
     }
-    if ( bo == 0) {
-        my_ls(".", &flags);
+    for (int i = 1; av[i]; i++) {
+        if (av[i][0] != '-' && compt <= 1)
+            my_ls(av[i], &flags, 0);
+        if (av[i][0] != '-' && compt > 1)
+            my_ls(av[i], &flags, 1);
     }
+    if ( bo == 0)
+        my_ls(".", &flags, 0);
 }
 
 int main(int ac, char **av)

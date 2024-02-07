@@ -45,7 +45,7 @@ typedef struct flags {
 int my_sort_array(struct dir *buffer);
 int my_strcmp_alpha(char const *s1, char const *s2);
 int add_perm(struct dirent *entity, struct dir *buffer, int i, char *path);
-void display(struct dir *buffer, struct flags *flags, char *path);
+void display(struct dir *buffer, struct flags *flags, char *path, int plus);
 void reverse_array(struct dir *buffer, struct flags *flags);
 int my_sort_array_time(struct dir *buffer, struct flags *flags);
 int my_strcmp_time(int s1, int s2);
