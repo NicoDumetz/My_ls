@@ -51,7 +51,6 @@ static void disp_d(struct flags *flags, char *path, struct dir *buffer)
 
 void display(struct dir *buffer, struct flags *flags, char *path)
 {
-    my_sort_array(buffer);
     reverse_array(buffer, flags);
     my_sort_array_time(buffer, flags);
     if ( flags->d > 0)
