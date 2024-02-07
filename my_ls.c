@@ -10,7 +10,7 @@
 int error(DIR* fd)
 {
     if (fd == NULL) {
-        printf("%s\n", strerror(errno));
+        my_printf("%s\n", strerror(errno));
         exit(0);
         return 84;
     }
