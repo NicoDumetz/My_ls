@@ -33,6 +33,7 @@ typedef struct dir {
     int min;
     int total;
     int mtime;
+    char *readlink;
 } dir;
 typedef struct flags {
     int a;

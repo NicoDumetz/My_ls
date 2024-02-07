@@ -19,7 +19,8 @@ static void set_perm(struct stat *file, struct dir *buffer, int i)
     buffer[i].grp[3] = '\0';
     buffer[i].other[0] = (file->st_mode & S_IROTH) ? 'r' : '-';
     buffer[i].other[1] = (file->st_mode & S_IWOTH) ? 'w' : '-';
-    buffer[i].other[2] = (file->st_mode & S_IXOTH) ? (file->st_mode & S_ISVTX) ? 't' : 'd' :'-';
+    buffer[i].other[2] = (file->st_mode & S_IXOTH) ? 'd' : '-';
+    buffer[i].other[2] = (file->st_mode & S_ISVTX) ? 't' : buffer[i].other[2];
     buffer[i].other[3] = '\0';
 }
 
@@ -65,6 +66,16 @@ static char *set_path(char *path_files, char *path, struct dirent *entity)
     return path_files;
 }
 
+static void get_link(struct stat *file, struct dir *buffer,
+    int i, char *path_files)
+{
+    char *str = malloc(sizeof(char) * file->st_size + 1);
+    int len = readlink(path_files, str, file->st_size);
+
+    str[len] = '\0';
+    buffer[i].readlink = str;
+}
+
 int add_perm(struct dirent *entity, struct dir *buffer, int i, char *path)
 {
     char *path_files = malloc(sizeof(char) * (my_strlen(path) +
@@ -82,6 +93,9 @@ int add_perm(struct dirent *entity, struct dir *buffer, int i, char *path)
     buffer[i].size = file.st_size;
     buffer[i].total = file.st_blocks;
     buffer[i].mtime = file.st_mtime;
+    if (buffer[i].d == 'l') {
+        get_link(&file, buffer, i, path_files);
+    }
     free(path_files);
 }
 
