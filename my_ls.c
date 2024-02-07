@@ -7,10 +7,10 @@
 #include "include/my_ls.h"
 #include "include/my_printf.h"
 
-int error(DIR* fd)
+int error(DIR* fd, char *path)
 {
     if (fd == NULL) {
-        my_printf("%s\n", strerror(errno));
+        my_printf("ls: cannot access '%s': %s\n", path, strerror(errno));
         exit(0);
         return 84;
     }
@@ -50,15 +50,32 @@ static void get_flags(char *str, struct flags *flags)
     }
 }
 
+static int get_size(char *path)
+{
+    int i;
+    struct dirent *entity;
+    DIR* fd;
+
+    fd = opendir(path);
+    if (error(fd, path) == 84)
+        return 84;
+    entity = readdir(fd);
+    for (i = 0; entity != NULL; i++) {
+        entity = readdir(fd);
+    }
+    return i;
+}
+
 int my_ls(char *path, struct flags *flags)
 {
     DIR* fd;
     struct dir *buffer;
+    int size = get_size(path);
 
     fd = opendir(path);
-    if (error(fd) == 84)
+    if (error(fd, path) == 84)
         return 84;
-    buffer = malloc(sizeof(struct dir) * 500000);
+    buffer = malloc(sizeof(struct dir) * size);
     if (add_information(flags, buffer, fd, path) == 84)
         return 84;
     display(buffer, flags, path);
