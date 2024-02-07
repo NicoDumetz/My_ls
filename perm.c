@@ -20,11 +20,15 @@ static void set_perm(struct stat *file, struct dir *buffer, int i)
     buffer[i].other[0] = (file->st_mode & S_IROTH) ? 'r' : '-';
     buffer[i].other[1] = (file->st_mode & S_IWOTH) ? 'w' : '-';
     buffer[i].other[2] = (file->st_mode & S_IXOTH) ? 'x' : '-';
-    buffer[i].other[2] = (file->st_mode & S_ISVTX) ? 't' : buffer[i].other[2];
+    if (buffer[i].other[0] == 'r' && buffer[i].other[1] == 'w' &&
+        buffer[i].other[2] == 'x')
+        buffer[i].other[2] = (file->st_mode & S_ISVTX) ? 't' :
+        buffer[i].other[2];
+    else if (buffer[i].other[0] == 'r' && buffer[i].other[1] == 'w')
+        buffer[i].other[2] = (file->st_mode & S_ISVTX) ? 'T' :
+        buffer[i].other[2];
     buffer[i].other[3] = '\0';
-    if (S_ISCHR(file->st_mode)) {
-        buffer[i].d = 'c';
-    }
+    buffer[i].d = S_ISCHR(file->st_mode) ? 'c' : buffer[i].d;
 }
 
 static void get_user_group(struct stat *file, struct dir *buffer, int i)
