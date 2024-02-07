@@ -19,7 +19,12 @@ static void disp_l(struct dir *buffer, int i)
 
 static void display_name(struct dir *buffer, struct flags *flags)
 {
+    int total = 0;
+
     if (flags->l > 0) {
+        for (int k = 0; buffer[k].name; k++)
+            total += buffer[k].total;
+        my_printf("total %d\n", total / 2);
         for (int i = 0; buffer[i].name; i++)
             disp_l(buffer, i);
     } else {
