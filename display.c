@@ -10,7 +10,7 @@
 
 static void disp_l(struct dir *buffer, int i)
 {
-    my_printf("%c%s%s%s. %d %s %s %4ld %s %2d %02d:%02d %s\n"
+    my_printf("%c%s%s%s %d %s %s %ld %s %2d %d:%d %s\n"
     , buffer[i].d, buffer[i].usr, buffer[i].grp, buffer[i].other
     , buffer[i].file_info, buffer[i].name_user
     , buffer[i].name_group, buffer[i].size, buffer[i].month
@@ -29,7 +29,7 @@ static void display_name(struct dir *buffer, struct flags *flags)
             disp_l(buffer, i);
     } else {
         for (int i = 0; buffer[i].name; i++)
-            my_printf("%s  ", buffer[i].name);
+            my_printf("%s ", buffer[i].name);
         my_printf("\n");
     }
 }

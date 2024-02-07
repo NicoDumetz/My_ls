@@ -54,17 +54,25 @@ static int error(void)
     return 84;
 }
 
+static char *set_path(char *path_files, char *path, struct dirent *entity)
+{
+    if ( my_strlen(path) != 1) {
+        my_strcat(path_files, path);
+        if (path_files[my_strlen(path) - 1] != '/')
+            my_strcat(path_files, "/");
+    }
+    my_strcat(path_files, entity->d_name);
+    return path_files;
+}
+
 int add_perm(struct dirent *entity, struct dir *buffer, int i, char *path)
 {
     char *path_files = malloc(sizeof(char) * (my_strlen(path) +
     my_strlen(entity->d_name) + 1));
     struct stat file;
-    char *date;
 
     path_files[0] = '\0';
-    if ( my_strlen(path) != 1)
-        my_strcat(path_files, path);
-    my_strcat(path_files, entity->d_name);
+    path_files = set_path(path_files, path, entity);
     if (stat(path_files, &file) == -1)
         return error();
     set_perm(&file, buffer, i);
