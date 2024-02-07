@@ -16,6 +16,26 @@ int error(DIR* fd, char *path)
     }
 }
 
+static char get_type(struct dirent *entity)
+{
+    if (entity->d_type == 8)
+        return '-';
+    if (entity->d_type == 4)
+        return 'd';
+    if (entity->d_type == 1)
+        return 'p';
+    if (entity->d_type == 12)
+        return 's';
+    if (entity->d_type == 10)
+        return 'l';
+    if (entity->d_type == 6)
+        return 'b';
+    if (entity->d_type == 2)
+        return 'c';
+    if (entity->d_type == 0)
+        return '?';
+}
+
 static int add_information(struct flags *flags,
     struct dir *buffer, DIR* fd, char *path)
 {
@@ -27,7 +47,7 @@ static int add_information(struct flags *flags,
         if ((entity->d_name[0] == '.' && flags->a == 0 && flags->d == 0))
             entity = readdir(fd);
         else {
-            buffer[i].d = entity->d_type == 4 ? 'd' : entity->d_type == '-';
+            buffer[i].d = get_type(entity);
             buffer[i].name = entity->d_name;
             buffer[i].reclen = entity->d_reclen;
             add_perm(entity, buffer, i, path);
