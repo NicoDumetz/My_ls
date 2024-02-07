@@ -87,6 +87,10 @@ static void get_link(struct stat *file, struct dir *buffer,
     char *str = malloc(sizeof(char) * (file->st_size + 1));
     int len = readlink(path_files, str, file->st_size);
 
+    if (len == -1) {
+        perror(strerror(errno));
+        exit(84);
+    }
     str[len] = '\0';
     buffer[i].readlink = str;
     free(str);
