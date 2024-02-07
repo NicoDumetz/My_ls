@@ -76,3 +76,19 @@ int add_perm(struct dirent *entity, struct dir *buffer, int i, char *path)
     buffer[i].mtime = file.st_mtime;
     free(path_files);
 }
+
+int add_perm_d(struct dir *disp_d, char *path)
+{
+    struct stat file;
+    char *date;
+
+    if (stat(path, &file) == -1)
+        return error();
+    set_perm(&file, disp_d, 0);
+    get_user_group(&file, disp_d, 0);
+    disp_d[0].file_info = file.st_nlink;
+    get_time(disp_d, 0, ctime(&file.st_mtime));
+    disp_d[0].size = file.st_size;
+    disp_d[0].total = file.st_blocks;
+    disp_d[0].mtime = file.st_mtime;
+}

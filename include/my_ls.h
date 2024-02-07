@@ -49,4 +49,5 @@ void display(struct dir *buffer, struct flags *flags, char *path);
 void reverse_array(struct dir *buffer, struct flags *flags);
 int my_sort_array_time(struct dir *buffer, struct flags *flags);
 int my_strcmp_time(int s1, int s2);
+int add_perm_d(struct dir *disp_d, char *path);
 #endif

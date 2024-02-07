@@ -15,7 +15,7 @@ static int add_information(struct flags *flags,
 
     entity = readdir(fd);
     for (i = 0; entity != NULL;) {
-        if ( entity->d_name[0] == '.' && flags->a == 0)
+        if ((entity->d_name[0] == '.' && flags->a == 0 && flags->d == 0))
             entity = readdir(fd);
         else {
             buffer[i].d = entity->d_type == 4 ? 'd' : '-';
