@@ -10,7 +10,8 @@ SRC	=	my_ls.c \
 		my_strcmp_alpha.c \
 		perm.c \
 		display.c \
-		reverse.c
+		reverse.c \
+		my_ls_file.c
 
 OBJ_TEST=	$(SRC_TEST:.c=.o)
 

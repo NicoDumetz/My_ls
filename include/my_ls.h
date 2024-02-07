@@ -50,4 +50,7 @@ void reverse_array(struct dir *buffer, struct flags *flags);
 int my_sort_array_time(struct dir *buffer, struct flags *flags);
 int my_strcmp_time(int s1, int s2);
 int add_perm_d(struct dir *disp_d, char *path);
+int my_ls_file(char *path, struct flags *flags, int plus);
+void disp_d(struct flags *flags, char *path, int d);
+char get_type(struct dirent *entity);
 #endif

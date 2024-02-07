@@ -16,7 +16,7 @@ int error(DIR* fd, char *path)
     }
 }
 
-static char get_type(struct dirent *entity)
+char get_type(struct dirent *entity)
 {
     if (entity->d_type == 8)
         return '-';
@@ -104,6 +104,21 @@ int my_ls(char *path, struct flags *flags, int plus)
     return 1;
 }
 
+static int file_or_dir(char *path, struct flags *flags, int plus)
+{
+    struct stat info;
+
+    if (stat(path, &info) == -1) {
+        my_printf("ls: cannot access '%s': %s\n", path, strerror(errno));
+        exit(0);
+        return 84;
+    }
+    if (S_ISDIR(info.st_mode))
+        my_ls(path, flags, plus);
+    else
+        my_ls_file(path, flags, plus);
+}
+
 static char *get_av(char **av)
 {
     int bo = 0;
@@ -120,12 +135,12 @@ static char *get_av(char **av)
     }
     for (int i = 1; av[i]; i++) {
         if (av[i][0] != '-' && compt <= 1)
-            my_ls(av[i], &flags, 0);
+            file_or_dir(av[i], &flags, 0);
         if (av[i][0] != '-' && compt > 1)
-            my_ls(av[i], &flags, 1);
+            file_or_dir(av[i], &flags, 1);
     }
     if ( bo == 0)
-        my_ls(".", &flags, 0);
+        file_or_dir(".", &flags, 0);
 }
 
 int main(int ac, char **av)

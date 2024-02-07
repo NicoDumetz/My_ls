@@ -10,7 +10,7 @@
 
 static void disp_l(struct dir *buffer, int i)
 {
-    my_printf("%c%s%s%s %d %s %s %ld %s %2d %d:%d %s\n"
+    my_printf("%c%s%s%s. %d %s %s %ld %s %2d %d:%d %s\n"
     , buffer[i].d, buffer[i].usr, buffer[i].grp, buffer[i].other
     , buffer[i].file_info, buffer[i].name_user
     , buffer[i].name_group, buffer[i].size, buffer[i].month
@@ -37,7 +37,7 @@ static void display_name(struct dir *buffer, struct flags *flags,
     }
 }
 
-static void disp_d(struct flags *flags, char *path, struct dir *buffer)
+void disp_d(struct flags *flags, char *path, int d)
 {
     struct dir disp_d;
 
@@ -46,7 +46,7 @@ static void disp_d(struct flags *flags, char *path, struct dir *buffer)
         return;
     }
     add_perm_d(&disp_d, path);
-    my_printf("d");
+    disp_d.d = d == 1 ? 'd' : '-';
     disp_d.name = path;
     disp_l(&disp_d, 0);
     return;
@@ -57,6 +57,6 @@ void display(struct dir *buffer, struct flags *flags, char *path, int plus)
     reverse_array(buffer, flags);
     my_sort_array_time(buffer, flags);
     if ( flags->d > 0)
-        return disp_d(flags, path, buffer);
+        return disp_d(flags, path, 1);
     display_name(buffer, flags, plus, path);
 }
