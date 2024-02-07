@@ -7,7 +7,7 @@
 #include "include/my_ls.h"
 #include "include/my_printf.h"
 
-int error(DIR* fd, char *path)
+static int error(DIR* fd, char *path)
 {
     if (fd == NULL) {
         my_printf("ls: cannot access '%s': %s\n", path, strerror(errno));
@@ -36,7 +36,7 @@ char get_type(struct dirent *entity)
         return '?';
 }
 
-static int add_information(struct flags *flags,
+int add_information(struct flags *flags,
     struct dir *buffer, DIR* fd, char *path)
 {
     int i;
@@ -71,7 +71,7 @@ static void get_flags(char *str, struct flags *flags)
     }
 }
 
-static int get_size(char *path)
+int get_size(char *path)
 {
     int i;
     struct dirent *entity;
@@ -114,20 +114,33 @@ static int file_or_dir(char *path, struct flags *flags, int plus)
         exit(0);
         return 84;
     }
+    if (flags->R > 0) {
+        flags_r(path, flags, 1);
+        return 0;
+    }
     if (S_ISDIR(info.st_mode))
         my_ls(path, flags, plus);
     else
         my_ls_file(path, flags, plus);
 }
 
-static void set_flags(struct flags *flags)
+static int set_flags(struct flags *flags, char **av)
 {
+    int compt = 0;
+
     flags->a = 0;
     flags->l = 0;
     flags->R = 0;
     flags->d = 0;
     flags->r = 0;
     flags->t = 0;
+    for (int k = 1; av[k]; k++) {
+        if (av[k][0] == '-')
+            get_flags(av[k], flags);
+        else
+            compt += 1;
+    }
+    return compt;
 }
 
 static char *get_av(char **av)
@@ -136,13 +149,7 @@ static char *get_av(char **av)
     int compt = 0;
     struct flags flags;
 
-    set_flags(&flags);
-    for (int k = 1; av[k]; k++) {
-        if (av[k][0] == '-')
-            get_flags(av[k], &flags);
-        else
-            compt += 1;
-    }
+    compt = set_flags(&flags, av);
     for (int i = 1; av[i]; i++) {
         if (av[i][0] != '-' && compt <= 1)
             file_or_dir(av[i], &flags, 0);

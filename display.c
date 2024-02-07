@@ -11,14 +11,14 @@
 static void disp_l(struct dir *buffer, int i)
 {
     if (buffer[i].d == 'l') {
-        my_printf("%c%s%s%s. %d %s %s %ld %s %2d %d:%d %s -> '%s'\n"
+        my_printf("%c%s%s%s %d %s %s %ld %s %2d %d:%d %s -> '%s'\n"
         , buffer[i].d, buffer[i].usr, buffer[i].grp, buffer[i].other
         , buffer[i].file_info, buffer[i].name_user
         , buffer[i].name_group, buffer[i].size, buffer[i].month
         , buffer[i].day, buffer[i].hour, buffer[i].min, buffer[i].name,
         buffer[i].readlink);
     } else {
-        my_printf("%c%s%s%s. %d %s %s %ld %s %2d %d:%d %s\n"
+        my_printf("%c%s%s%s %d %s %s %ld %s %2d %d:%d %s\n"
         , buffer[i].d, buffer[i].usr, buffer[i].grp, buffer[i].other
         , buffer[i].file_info, buffer[i].name_user
         , buffer[i].name_group, buffer[i].size, buffer[i].month
@@ -63,6 +63,8 @@ void disp_d(struct flags *flags, char *path, int d)
 
 void display(struct dir *buffer, struct flags *flags, char *path, int plus)
 {
+    if (len_array(buffer) == 0)
+        return;
     if ( flags->d > 0)
         return disp_d(flags, path, 1);
     my_sort_array(buffer);

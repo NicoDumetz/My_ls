@@ -54,4 +54,11 @@ int add_perm_d(struct dir *disp_d, char *path);
 int my_ls_file(char *path, struct flags *flags, int plus);
 void disp_d(struct flags *flags, char *path, int d);
 char get_type(struct dirent *entity);
+int flags_r(char *path, struct flags *flags, int plus);
+int add_information(struct flags *flags,
+    struct dir *buffer, DIR* fd, char *path);
+int get_size(char *path);
+int my_strcmp(char const *s1, char const *s2);
+char *set_path(char *path_files, char *path, struct dirent *entity);
+int len_array(struct dir *tab);
 #endif

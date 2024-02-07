@@ -55,7 +55,7 @@ static int error(void)
     return 84;
 }
 
-static char *set_path(char *path_files, char *path, struct dirent *entity)
+char *set_path(char *path_files, char *path, struct dirent *entity)
 {
     if ( my_strlen(path) != 1) {
         my_strcat(path_files, path);
