@@ -19,6 +19,8 @@ OBJ	=	$(SRC:.c=.o)
 
 NAME	=	my_ls
 
+CFLAGS += -g
+
 all:	$(NAME)
 
 $(NAME):	$(OBJ)

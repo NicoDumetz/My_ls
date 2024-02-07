@@ -55,6 +55,7 @@ static int add_information(struct flags *flags,
             i++;
         }
     }
+    i--;
     buffer[i].name = 0;
 }
 
@@ -119,19 +120,28 @@ static int file_or_dir(char *path, struct flags *flags, int plus)
         my_ls_file(path, flags, plus);
 }
 
+static void set_flags(struct flags *flags)
+{
+    flags->a = 0;
+    flags->l = 0;
+    flags->R = 0;
+    flags->d = 0;
+    flags->r = 0;
+    flags->t = 0;
+}
+
 static char *get_av(char **av)
 {
     int bo = 0;
     int compt = 0;
     struct flags flags;
 
+    set_flags(&flags);
     for (int k = 1; av[k]; k++) {
         if (av[k][0] == '-')
             get_flags(av[k], &flags);
-        else {
+        else
             compt += 1;
-            bo = 1;
-        }
     }
     for (int i = 1; av[i]; i++) {
         if (av[i][0] != '-' && compt <= 1)
@@ -139,7 +149,7 @@ static char *get_av(char **av)
         if (av[i][0] != '-' && compt > 1)
             file_or_dir(av[i], &flags, 1);
     }
-    if ( bo == 0)
+    if ( compt == 0)
         file_or_dir(".", &flags, 0);
 }
 

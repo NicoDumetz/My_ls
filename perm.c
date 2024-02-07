@@ -69,17 +69,18 @@ static char *set_path(char *path_files, char *path, struct dirent *entity)
 static void get_link(struct stat *file, struct dir *buffer,
     int i, char *path_files)
 {
-    char *str = malloc(sizeof(char) * file->st_size + 1);
+    char *str = malloc(sizeof(char) * (file->st_size + 1));
     int len = readlink(path_files, str, file->st_size);
 
     str[len] = '\0';
     buffer[i].readlink = str;
+    free(str);
 }
 
 int add_perm(struct dirent *entity, struct dir *buffer, int i, char *path)
 {
     char *path_files = malloc(sizeof(char) * (my_strlen(path) +
-    my_strlen(entity->d_name) + 1));
+    my_strlen(entity->d_name) + 2));
     struct stat file;
 
     path_files[0] = '\0';
